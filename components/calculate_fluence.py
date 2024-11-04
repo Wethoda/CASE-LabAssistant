@@ -12,6 +12,12 @@ async def fluence_command(update: Update, context: CallbackContext):
 
 async def handle_fluence_data(update: Update, context: CallbackContext):
     if context.user_data.get("awaiting_fluence_data"):
+        user_input = update.message.text.split(",")
+
+        if len(user_input) != 3:
+            await update.message.reply_text("Ошибка: введенные данные некоректны. Введдите три параметра через запятую(1, 1, 1)")
+            return
+
         try:
             power, pulse_duration, spot_area = map(float, update.message.text.split(","))
             fluence = calculate_fluence(power, pulse_duration, spot_area)
